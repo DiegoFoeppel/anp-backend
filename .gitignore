@@ -1,0 +1,22 @@
+# node
+node_modules/
+npm-debug.log
+
+src/data/gtfs/
+stats.html
+
+# env
+.env
+.env.*
+
+# build
+dist/
+build/
+
+# logs
+logs
+*.log
+
+# OS
+.DS_Store
+Thumbs.db
