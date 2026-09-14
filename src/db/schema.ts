@@ -7,6 +7,10 @@ import {
   numeric,
   doublePrecision,
   customType,
+  bigint,
+  char,
+  jsonb,
+  timestamp,
 } from "drizzle-orm/pg-core";
 
 // Tipo customizado pra coluna de geometria do PostGIS (wkb_geometry).
@@ -105,4 +109,67 @@ export const postos = postosCombustivel.table("postos", {
   geoDataDeObtencao: date("geo_data_de_obtencao"),
   geoOrigemDaInformacao: text("geo_origem_da_informacao"),
   geoSituacaoConstatada: text("geo_situacao_constatada"),
+});
+
+export const postoProdutos = postosCombustivel.table("posto_produtos", {
+  id: bigint("id", { mode: "number" }).primaryKey(),
+  codigoSimp: bigint("codigo_simp", { mode: "number" }).notNull(),
+  produto: text("produto").notNull(),
+  tancagem: numeric("tancagem"),
+  unidadeMedidaTancagem: text("unidade_medida_tancagem"),
+  qtdeBicos: integer("qtde_bicos"),
+});
+
+export const postosApi = postosCombustivel.table("postos_via_api", {
+  codigoSimp: bigint("codigo_simp", { mode: "number" }).primaryKey(),
+
+  autorizacao: text("autorizacao"),
+  dataPublicacao: date("data_publicacao"),
+
+  razaoSocial: text("razao_social").notNull(),
+  cnpj: char("cnpj", { length: 14 }).notNull(),
+
+  endereco: text("endereco"),
+  complemento: text("complemento"),
+  bairro: text("bairro"),
+  cep: char("cep", { length: 8 }),
+  uf: char("uf", { length: 2 }),
+  municipio: text("municipio"),
+
+  distribuidora: text("distribuidora"),
+
+  dataVinculacao: date("data_vinculacao"),
+  classe: text("classe"),
+
+  latitude: doublePrecision("latitude"),
+  longitude: doublePrecision("longitude"),
+
+  validacao: text("validacao"),
+  estimativaAcuracia: text("estimativa_acuracia"),
+  srid: integer("srid"),
+  src: text("src"),
+  dataObtencao: date("data_obtencao"),
+  origemInformacao: text("origem_informacao"),
+  situacaoConstatada: text("situacao_constatada"),
+  observacao: text("observacao"),
+  statusSigaf: text("status_sigaf"),
+
+  inadimplenciaPmqc: jsonb("inadimplencia_pmqc")
+    .$type<unknown[]>()
+    .notNull()
+    .default([]),
+
+  raw: jsonb("raw").$type<Record<string, unknown>>().notNull(),
+
+  insertedAt: timestamp("inserted_at", {
+    withTimezone: true,
+  })
+    .defaultNow()
+    .notNull(),
+
+  updatedAt: timestamp("updated_at", {
+    withTimezone: true,
+  })
+    .defaultNow()
+    .notNull(),
 });
