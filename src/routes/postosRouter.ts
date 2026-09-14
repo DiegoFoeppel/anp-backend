@@ -1,9 +1,15 @@
 import Router from "express";
-import { getAll } from "../controllers/postosController";
+import {
+  getAll,
+  getAllGeojson,
+  getCitiesAndStates,
+} from "../controllers/postosController";
 
 const router = Router();
 
 router.get("/", getAll);
+router.get("/geojson", getAllGeojson);
+router.get("/cidades", getCitiesAndStates);
 
 export default router;
 
